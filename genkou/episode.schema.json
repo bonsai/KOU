@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bonsai.github.io/KOU/genkou/episode.schema.json",
+  "title": "KOU Read-Aloud Episode",
+  "description": "A KOU episode with narration separated from metadata and production notes. TTS systems must read only read_aloud.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "duration_seconds",
+    "read_aloud"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of this data schema."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^kou-[0-9]{3,}$",
+      "description": "Stable episode identifier, e.g. kou-001."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Episode title. Metadata; do not read unless explicitly requested."
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600,
+      "description": "Target runtime in seconds."
+    },
+    "read_aloud": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The only field to pass to the default text-to-speech pipeline. Contains narration only, without production notes or metadata."
+    },
+    "production_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "visuals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sound": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "direction": {
+          "type": "string"
+        },
+        "ending": {
+          "type": "string"
+        }
+      }
+    },
+    "next_episode": {
+      "type": "string",
+      "description": "Optional teaser or title for the next episode. Not read by default."
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Sources used to verify historical or factual claims.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
